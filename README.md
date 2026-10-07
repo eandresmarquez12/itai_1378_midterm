@@ -1,128 +1,56 @@
-# License Plate Detection
+# Automatic License Plate Recognition (ALPR) System
 
 ## Team Members
+* **Edwin Marquez**
+* **Chris Roy**
+* **Unnati Shakya**
+* **Njeh Ababio**
 
-* Chris Roy
-* [Team Member 2]
-* [Team Member 3]
-* [Team Member 4]
-
----
-
-## Project Tier
-
-**Tier 1 — Core**
-
-This project uses a single computer vision model to perform one focused task: detecting license plates in vehicle images.
-
----
+## Tier Selection
+* **Tier 1**: Focuses on building a robust end-to-end computer vision pipeline using proven pretrained models (YOLOv8 + EasyOCR) tailored for real-world automated tolling and security monitoring.
 
 ## Problem Statement
-
-Identifying license plates across large numbers of vehicle images can be time-consuming and inconsistent when performed manually. A computer vision system that automatically locates license plates could make vehicle-image processing faster, more consistent, and easier to scale.
-
----
+Manual vehicle logging in private parking facilities and toll booths causes congestion, increases operational labor costs, and introduces human error during peak traffic hours. Automated License Plate Recognition (ALPR) provides a reliable, scalable solution to process vehicle entries seamlessly in real time.
 
 ## Solution Overview
+An automated computer vision system that captures vehicle images, detects and crops license plate regions using YOLOv8, extracts text using EasyOCR, and logs plate numbers into a structured database.
 
-We will build a license plate detection application using a YOLO object detection model. Given an image containing one or more vehicles, the model will identify the locations of visible license plates and display them using bounding boxes.
-
-### Workflow
-
-**Vehicle Image → YOLO Detection Model → License Plate Bounding Boxes**
-
-The project will focus on detecting the location of license plates and will not attempt to read the characters on the plates.
-
----
+**Pipeline Flow:**  
+`Input Image / Video Stream` ➔ `YOLOv8 Plate Detector` ➔ `Cropped Plate Region` ➔ `EasyOCR Text Reader` ➔ `Database Entry`
 
 ## Technical Approach
-
-### Computer Vision Technique
-
-**Object Detection**
-
-### Model
-
-**YOLO (You Only Look Once)**
-
-### Framework
-
-**Ultralytics YOLO with PyTorch**
-
-### Model Strategy
-
-We plan to begin with a pretrained YOLO model and fine-tune it using a labeled license plate dataset.
-
-### Why This Approach?
-
-YOLO is designed for fast object detection and can identify objects using bounding boxes. This makes it a practical fit for a focused Tier 1 project while leaving room for future improvements if needed.
-
----
+* **Computer Vision Task:** Object Detection + Optical Character Recognition (OCR)
+* **Detection Model:** YOLOv8s (PyTorch)
+* **OCR Engine:** EasyOCR (CRAFT Text Detection + CRNN Recognition)
+* **Frameworks:** PyTorch, OpenCV, Pandas
 
 ## Data Plan
-
-### Data Source
-
-**WIP — Public license plate dataset to be selected by the group**
-
-### Approximate Dataset Size
-
-**WIP**
-
-### Images
-
-Vehicle images containing visible license plates.
-
-### Labels
-
-License plates will be labeled using bounding boxes indicating their locations within the images.
-
-### Data Preparation
-
-The dataset will be reviewed for incorrect or missing annotations. The available data will then be divided into training, validation, and test sets.
-
-### Dataset Link
-
-**WIP — Add public dataset URL after the group selects the dataset.**
-
----
+* **Source:** Roboflow Public License Plate Datasets / Kaggle ALPR Dataset
+* **Dataset Size:** ~2,500 annotated images
+* **Splits:** 70% Training, 15% Validation, 15% Testing
+* **Labels:** Bounding Box coordinates for `license_plate`
 
 ## Success Metrics
-
-### Primary Metric — mAP@50
-
-**Target: ≥ 0.70**
-
-The primary metric will measure how accurately the model detects license plates using predicted bounding boxes.
-
-### Secondary Metric — Precision
-
-**Target: ≥ 0.80**
-
-Precision will measure how often the model's detected objects are actually license plates.
-
-### Overall Success
-
-The project will be considered successful if the model reliably detects license plates across a variety of vehicle images while maintaining a relatively low number of false detections.
-
----
+* **Primary Metric:** Object Detection mAP@50 ≥ 90%
+* **Secondary Metric:** Inference latency ≤ 50ms per image; OCR character recognition accuracy ≥ 88%
 
 ## Milestone Plan
 
-> **WIP — Final schedule will be confirmed by the group.**
+| Phase | Goal | Milestone | 16-Week Term | 10-Week Term |
+|---|---|---|---|---|
+| **1. Blueprint** | Plan approved | Midterm submitted | Week 10 | Week 5 |
+| **2. First Working Demo** | Pretrained model runs end-to-end on sample images | Pipeline functional | Week 11 | Week 6 |
+| **3. Make It Yours** | Integrate dataset & custom logic | System solves ALPR problem | Weeks 12–13 | Weeks 7–8 |
+| **4. Improve & Measure** | Test, tune & record metrics | Benchmark results recorded | Week 14 | Week 9 |
+| **5. Package & Present** | Final demo video, docs & presentation | Final project submitted | Week 15 | Week 10 |
 
-| Phase              | Timeline  | Goal                                                                              |
-| ------------------ | --------- | --------------------------------------------------------------------------------- |
-| Blueprint          | Week 5    | Finalize project scope, dataset plan, and technical approach                      |
-| First Working Demo | Week 6    | Run a pretrained YOLO model on sample images and produce license plate detections |
-| Make It Yours      | Weeks 7–8 | Fine-tune the model and build the license plate detection workflow                |
-| Improve & Measure  | Week 9    | Evaluate performance, tune the model, and document results                        |
-| Package & Present  | Week 10   | Finalize the notebook, README, demo, and presentation                             |
+## Top Risks & Mitigations
 
----
+1. **Poor Lighting & Glare at Night**
+   * *Mitigation (Plan B):* Apply Contrast Limited Adaptive Histogram Equalization (CLAHE) preprocessing using OpenCV.
+2. **Low OCR Accuracy on Degraded/Dirty Plates**
+   * *Mitigation (Plan B):* Apply character bounding-box filters and rule-based regex validation matching standard state plate formats.
 
-## Risks and Plan B
-
-### Risk 1 — Dataset Quality
-
-The selected dataset may contain inconsistent, missing, or difficult-to-detect license plate annota
+## Computing Resources
+* **Environment:** Google Colab / Kaggle Free GPU (T4 Tensor Core)
+* **Estimated Cost:** $0.00
